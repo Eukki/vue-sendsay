@@ -1,4 +1,4 @@
-# sendsay
+# vue-sendsay
 
 ## Build Setup
 
