@@ -1,51 +1,130 @@
 import Vue from 'vue';
+import API from '@/scripts/api';
+import Utils from '@/scripts/Utils';
 
 // ------------------------------ //
 // ------------ State ----------- //
 // ------------------------------ //
 export const state = () => {
-  const s = {
-    items: {
-      /* [id: number]: Item */
+  const defaultState = {
+    User: {
+      isAuth: false,
+      login: '',
+      sublogin: ''
     },
-    users: {
-      /* [id: string]: User */
+    History: {
+      items: []
     },
-    feeds: {
-      /* [page: number] : [ [id: number] ] */
+    Config: {
+      textareaWidth: '50%'
     }
   }
 
-  return s;
-}
-
-// --------------------------------- //
-// ------------ Actions ------------ //
-// --------------------------------- //
-export const mutations = {
-  SET_FEED: (state, { feed, ids, page }) => {
-    Vue.set(state.feeds[feed], page, ids)
-  },
-  SET_ITEM: (state, { item }) => {
-    if (item) {
-      Vue.set(state.items, item.id, item)
-    }
-  },
-  SET_ITEMS: (state, { items }) => {
-    items.forEach((item) => {
-      if (item) {
-        Vue.set(state.items, item.id, item)
-      }
-    })
-  },
-  SET_USER: (state, { id, user }) => {
-    Vue.set(state.users, id, user || false) /* false means user not found */
-  }
+  return defaultState;
 }
 
 // --------------------------------- //
 // ------------ Actions ------------ //
 // --------------------------------- //
 export const actions = {
+  // USER
+  async LOGIN({ dispatch }, { login, sublogin, password }) {
+    const response = await API.login({ login, sublogin, password });
+    if (response.success) {
+      dispatch('EDIT_USER', { login, sublogin, isAuth: true });
+    }
 
+    return response;
+  },
+
+  async LOGOUT({ dispatch }) {
+    const response = await API.logout();
+    if (response.success) dispatch('FLUSH_STORE');
+    return response;
+  },
+
+  EDIT_USER({ commit }, update: Object) {
+    for (const key in update) {
+      commit('SET', { root: 'User', key, value: update[key] });
+    }
+  },
+
+  // HISTORY
+  async SEND_REQUEST({ dispatch }, request) {
+    const response = await API.request(JSON.parse(request));
+    const success = Object.assign({}, response).success;
+    delete response.success;
+
+    dispatch('UPDATE_HISTORY', {
+      request,
+      success,
+      response: JSON.stringify(response, null, 2),
+      action: response.action || response.request.action || 'no action'
+    });
+
+    return response;
+  },
+
+  UPDATE_HISTORY({ state, commit }, requestData) {
+    const history = state.History.items.slice();
+    const findedInHistoryIndex = history.findIndex((h) => h.action === requestData.action);
+    if (findedInHistoryIndex >= 0) {
+      const historyItem = {
+        ...history[findedInHistoryIndex],
+        ...requestData,
+        date: Date.now()
+      };
+      history[findedInHistoryIndex] = historyItem;
+    }
+    else {
+      const historyItem = {
+        ...requestData,
+        id: Utils.String.hash(6),
+        date: Date.now()
+      };
+      history.push(historyItem);
+    }
+
+    commit('SET', { root: 'History', key: 'items', value: history });
+  },
+
+  DELETE_FROM_HISTORY({ state, commit }, { id }) {
+    const history = state.History.items.slice();
+    const index = Utils.Array.find(history, id);
+    history.splice(index, 1);
+    commit('SET', { root: 'History', key: 'items', value: history });
+  },
+
+  EDIT_HISTORY({ commit }, update: Object) {
+    for (const key in update) {
+      commit('SET', { root: 'History', key, value: update[key] });
+    }
+  },
+
+  // CONFIG
+  UPDATE_TEXTAREA_WIDTH({ commit }, value) {
+    commit('SET', { root: 'Config', key: 'textareaWidth', value });
+  },
+
+  EDIT_CONFIG({ commit }, update: Object) {
+    for (const key in update) {
+      commit('SET', { root: 'Config', key, value: update[key] });
+    }
+  },
+
+  // SYSTEM
+  FLUSH_STORE({ dispatch }) {
+    dispatch('EDIT_USER', { login: '', sublogin: '', isAuth: false });
+    dispatch('EDIT_HISTORY', { items: [] });
+    dispatch('EDIT_CONFIG', { textareaWidth: '50%' });
+  }
+}
+
+// ----------------------------------- //
+// ------------ Mutations ------------ //
+// ----------------------------------- //
+export const mutations = {
+  SET: (state, { root, key, value }) => {
+    Vue.set(state[root], key, value);
+  }
 }

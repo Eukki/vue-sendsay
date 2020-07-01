@@ -1,6 +1,5 @@
 declare module '*.svg' {
-  import { VNode } from 'vue';
-  type Svg = VNode;
-  const content: Svg;
+  import Vue, {VueConstructor} from 'vue';
+  const content: VueConstructor<Vue>;
   export default content;
 }

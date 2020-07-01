@@ -1,0 +1,47 @@
+.auth-input
+  display: flex
+  flex-direction: column
+  margin: 0.5rem 0
+
+  &__text
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+
+    &-label
+      margin-bottom: 0.3rem
+      transition: color 0.4s ease
+
+    &-subtext
+      font-size: 0.8rem
+      color: $small-text
+      line-height: 1.7rem
+
+  &__input
+    border: 1px solid rgba(0, 0, 0, 0.2)
+    border-radius: 5px
+    padding: 0.5rem
+    transition: border-color 0.4s ease
+
+    &:hover
+      border: 1px solid rgba(0, 0, 0, 0.4)
+
+    &:focus
+      padding: 0.45rem
+      border: 2px solid rgba(0, 0, 0, 0.2)
+
+  &._error
+    .auth-input
+      &__text
+        color: $red
+
+      &__input
+        border: 1px solid $red
+        box-shadow: 0px 0px 5px rgba(207, 44, 0, 0.5)
+
+        &:hover
+          border: 1px solid $red
+
+        &:focus
+          border: 1px solid $red
+          padding: 0.5rem

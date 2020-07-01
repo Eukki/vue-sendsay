@@ -1,18 +1,18 @@
 <template>
   <div
-    class="base-button"
+    class="console-textarea"
+    :style="styles"
     :class="{
-      '_disabled': isDisabled,
-      '_loading': isLoading
+      '_error': isError
     }"
-    @click="!isDisabled && !isLoading && $emit('onClick')"
   >
-    <span v-if="!isLoading">{{ text }}</span>
-
-    <img
-      v-else
-      class="base-button__loader"
-      src="@/assets/images/icons/button-loader.svg"
+    <div class="console-textarea__title">{{ title }}</div>
+    <textarea
+      class="console-textarea__textarea"
+      :value="body"
+      :readonly="readonly"
+      @input="onInput"
+      @blur="$emit('checkValid')"
     />
   </div>
 </template>
@@ -21,10 +21,20 @@
   import { Component, Vue, Prop } from 'nuxt-property-decorator';
 
   @Component({})
-  export default class BaseButtonComponent extends Vue {
-    @Prop(String) text;
-    @Prop({ type: Boolean, default: false }) isLoading;
-    @Prop({ type: Boolean, default: false }) isDisabled;
+  export default class ConsoleTextareaComponent extends Vue {
+    @Prop(String) body;
+    @Prop(String) width;
+    @Prop(String) title;
+    @Prop(Boolean) isError;
+    @Prop({ type: Boolean, default: false }) readonly;
+
+    get styles() {
+      return this.width ? `width: ${this.width};` : '';
+    }
+
+    onInput(e) {
+      this.$emit('onInputRequest', e.target.value);
+    }
   }
 </script>
 

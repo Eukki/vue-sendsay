@@ -1,97 +1,59 @@
-.auth-page
-  display: flex
-  flex-direction: column
-  height: 100vh
-  width: 100vw
-  justify-content: center
+.base-button
+  display: inline-flex
   align-items: center
+  justify-content: center
 
-  &__logo
-    margin: 2rem
+  min-width: 7rem
+  min-height: 2.5rem
+  padding: 0.5rem 2rem
+  border-radius: 5px
 
-  &__form
-    @include shadow
-    max-width: 100%
-    width: 520px
-    padding: 2.5rem 1.875rem
-    background: #fff
-    border-radius: 3px
-    transition: 200ms box-shadow
+  background: $btn-normal-bg
+  color: $white
+  user-select: none
+  cursor: pointer
+  transition: background 0.4s
 
-    &-header
-      font-weight: normal
-      margin-bottom: 0.5rem
+  &__loader
+    animation: spin 2s linear infinite
 
-    &-error
-      display: flex
-      flex-direction: row
-      align-items: flex-start
-      background: $error-bg
-      padding: 1rem
-      color: $red
+  &:hover
+    background: $btn-hover-bg
 
-      &-image
-        padding-top: 0.3rem
+  &:active
+    background: $btn-active-bg
 
-      &-text
-        display: flex
-        flex-direction: column
-        padding: 0 0.8rem
+  &:focus
+    border: 2px solid #45A5FF
 
-        &-title
-          font-size: 1.3rem
-
-        &-message
-          font-size: 0.8rem
-          opacity: 0.5
-
-
-
-
-.auth-input
-  display: flex
-  flex-direction: column
-  margin: 0.5rem 0
-
-  &__text
-    display: flex
-    flex-direction: row
-    justify-content: space-between
-
-    &-label
-      margin-bottom: 0.3rem
-      transition: color 0.4s ease
-
-    &-subtext
-      font-size: 0.8rem
-      color: $small-text
-      line-height: 1.7rem
-
-  &__input
-    border: 1px solid rgba(0, 0, 0, 0.2)
-    border-radius: 5px
-    padding: 0.5rem
-    transition: border-color 0.4s ease
+  &._disabled
+    pointer-events: none
+    background: $btn-disabled-bg
 
     &:hover
-      border: 1px solid rgba(0, 0, 0, 0.4)
+      background: $btn-disabled-bg
+
+    &:active
+      background: $btn-disabled-bg
 
     &:focus
-      padding: 0.45rem
-      border: 2px solid rgba(0, 0, 0, 0.2)
+      border: none
+      background: $btn-disabled-bg
 
-  &._error
-    .auth-input
-      &__text
-        color: $red
+  &._loading
+    pointer-events: none
+    background: $btn-normal-bg
 
-      &__input
-        border: 1px solid $red
-        box-shadow: 0px 0px 5px rgba(207, 44, 0, 0.5)
+    &:hover
+      background: $btn-normal-bg
 
-        &:hover
-          border: 1px solid $red
+    &:active
+      background: $btn-normal-bg
 
-        &:focus
-          border: 1px solid $red
-          padding: 0.5rem
+    &:focus
+      border: none
+      background: $btn-normal-bg
+
+  @keyframes spin
+    100%
+      transform: rotate(360deg)

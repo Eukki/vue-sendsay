@@ -20,6 +20,7 @@
       :type="type"
       :required="required"
       @input="onChange"
+      @blur="checkValid"
     />
   </div>
 </template>
@@ -37,16 +38,18 @@
     @Prop(String) label;
     @Prop(String) status;
     @Prop(String) subtext;
+    @Prop(Function) isValid;
     @Prop({ type: Boolean, default: false }) required;
 
     InputStatus = InputStatus;
 
     onChange(e) {
       this.$emit('input', e.target.value);
+      if (this.status === InputStatus.ERROR) this.$emit('update:status', InputStatus.WRITING);
     }
 
-    auth() {
-      console.log('auth');
+    checkValid() {
+      if (!this.isValid(this.model)) this.$emit('update:status', InputStatus.ERROR);
     }
   }
 </script>

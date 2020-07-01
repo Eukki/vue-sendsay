@@ -1,0 +1,56 @@
+.console-textarea
+  display: flex
+  flex-direction: column
+  text-align: left
+  height: 100%
+  min-width: 13rem
+  padding: 1rem
+  background: $white
+
+  &:first-child
+    padding-right: 0
+    width: 50%
+
+  &:last-child
+    padding-left: 0
+
+  &__title
+    color: $small-text
+    font-size: 0.8rem
+
+  &__textarea
+    display: flex
+    flex: 1
+
+    padding: 0.5rem
+    border-radius: 5px
+    border: 1px solid rgba(0, 0, 0, 0.2)
+
+    resize: none
+    overflow: hidden
+    transition: border-color 0.4s ease
+    font-family: monospace
+    line-height: 1.1rem
+
+    &:hover
+      border: 1px solid rgba(0, 0, 0, 0.4)
+
+    &:focus
+      padding: 0.45rem
+      border: 2px solid rgba(0, 0, 0, 0.2)
+
+  &._error
+    .console-textarea
+      &__title
+        color: $red
+
+      &__textarea
+        border: 1px solid $red
+        box-shadow: 0px 0px 5px rgba(207, 44, 0, 0.5)
+
+        &:hover
+          border: 1px solid $red
+
+        &:focus
+          padding: 0.5rem
+          border: 1px solid $red

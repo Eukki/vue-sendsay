@@ -1,30 +1,31 @@
 html, body
-    overflow: hidden !important
-    font-size: 1rem
-    color: $doc-color
-    background: $doc-background
-    font-family: Roboto, 'sans-serif'
+  overflow: hidden !important
+  font-size: 16px
+  box-sizing: border-box
+  color: $main-text
+  background: $login-bg
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif
 
-    &.loaded #app
-        opacity: 1
-        z-index: 10
+  &.loaded #app
+    opacity: 1
+    z-index: 10
 
-    &.loaded #preloader-wrapper
-        opacity: 0
-        z-index: -1
+  &.loaded #preloader-wrapper
+    opacity: 0
+    z-index: -1
 
 body
-    width: 100vw
-    height: 100vh
-    display: flex
-    flex-direction: column
+  width: 100vw
+  height: 100vh
+  display: flex
+  flex-direction: column
 
 a
-    text-decoration: none
-    color: $link-color
+  text-decoration: none
+  color: $main-text
 
-button, button:focus
-    outline: none
+button, button:focus, input:focus, textarea:focus
+  outline: none
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
@@ -38,36 +39,88 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus
-    -webkit-text-fill-color: $doc-color
-    -webkit-box-shadow: 0 0 0 1000px $doc-background inset
+  -webkit-text-fill-color: $main-text
+  -webkit-box-shadow: 0 0 0 1000px $white inset
 
 .brand
-    background: $brand !important
-    color: #ffffff !important
+  background: $login-bg !important
+  color: #ffffff !important
 
 .pointer
-    cursor: pointer
+  cursor: pointer
 
 .align-middle
-    vertical-align: middle
+  vertical-align: middle
 
 .auto-height
-    height: auto !important
+  height: auto !important
 
 .no-radius
-    border-radius: 0 !important
+  border-radius: 0 !important
 
 .text-center
-    text-align: center
+  text-align: center
 
 .text-decoration-none
-    text-decoration: none!important
+  text-decoration: none !important
 
 .fill-width
-    width: 100%
+  width: 100%
 
 .fill-height
-    height: 100%
+  height: 100%
 
 .d-flex > *:not(.flex):not(.flex-fill), .d-inline-flex > *:not(.flex):not(.flex-fill)
-    flex: none !important
+  flex: none !important
+
+.border
+  width: 100%
+  border-top: 1px solid rgba(0, 0, 0, 0.2)
+
+.button
+  display: flex
+  align-items: center
+  justify-content: center
+  padding: 0.3rem 0.5rem
+  margin: 0 0.3rem
+  border: 2px solid transparent
+  border-radius: 7px
+  cursor: pointer
+
+  &:hover
+    span
+      color: $blue
+
+    svg, g, path
+      stroke: $blue
+
+  &:focus
+    border: 2px solid $focus
+
+  span
+    padding: 0 0.5rem
+
+.v-application a.link-to-github,
+a.link-to-github
+  color: $small-text
+  text-decoration: none
+
+  &::before
+    content: ''
+    position: absolute
+    background-image: url('/github-bio.png')
+    background-repeat: no-repeat
+    background-size: 100%
+    height: 450px
+    right: 0
+    bottom: 0
+    width: 265px
+    transform: translateY(100%)
+    transition: transform .3s
+    z-index: 1
+
+  &:hover
+    color: $green
+
+    &::before
+      transform: translateY(0px)

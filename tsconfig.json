@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "strict": true,
+    "jsx": "preserve",
+    "importHelpers": true,
+    "noImplicitAny": false,
+    "noImplicitThis": true,
+    "esModuleInterop": true,
+    "strictNullChecks": false,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": [
+        "./*"
+      ],
+      "@/*": [
+        "./*"
+      ]
+    },
+    "types": [
+      "@types/node",
+      "@nuxt/types",
+      "node",
+      "lodash",
+      "express"
+    ]
+  },
+  "include": [
+    "**/**/**.ts",
+    "**/**/**.tsx",
+    "**/**/**.vue"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
