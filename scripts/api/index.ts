@@ -2,6 +2,10 @@ import Sendsay from './sendsay';
 import Utils from '@/scripts/Utils';
 
 export default class API {
+  static async pong() {
+    return await API.request({ action: 'pong' });
+  }
+
   static async login(loginData) {
     return await API.request({ action: 'login', ...loginData });
   }

@@ -76,8 +76,7 @@ export const actions = {
         date: Date.now()
       };
       history[findedInHistoryIndex] = historyItem;
-    }
-    else {
+    } else {
       const historyItem = {
         ...requestData,
         id: Utils.String.hash(6),
@@ -122,6 +121,10 @@ export const actions = {
     dispatch('EDIT_USER', { login: '', sublogin: '', isAuth: false });
     dispatch('EDIT_HISTORY', { items: [] });
     dispatch('EDIT_CONFIG', { textareaWidth: '50%' });
+  },
+
+  async CHECK_SESSION() {
+    return await API.pong();
   }
 }
 

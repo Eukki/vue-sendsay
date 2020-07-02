@@ -125,10 +125,13 @@
     request = '';
     response = '';
 
-    fetch({ store, redirect }) {
+    async fetch({ store, redirect }) {
       if (!store.state.User.isAuth || !Utils.Document.getCookie('vue-sendsay-session')) {
         redirect('/auth');
       }
+
+      const response = await store.dispatch('CHECK_SESSION');
+      if (!response.success) redirect('/auth');
     }
 
     fullscreenChange(fullscreen) {

@@ -64,6 +64,9 @@
 
     <button
       class="console-history__cancel"
+      :class="{
+        '_disabled': !items.length
+      }"
       @click="items.length && $emit('openModal')"
     >
       <CancelImg/>

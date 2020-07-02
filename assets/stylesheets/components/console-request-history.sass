@@ -20,6 +20,15 @@
       svg, g, path
         stroke: $blue
 
+    &._disabled
+      svg, g, path
+        opacity: 0.7
+        stroke: $small-text
+
+      &:hover
+        svg, g, path
+          stroke: $small-text
+
   &__items
     display: flex
     flex-direction: row
