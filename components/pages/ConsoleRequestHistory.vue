@@ -62,9 +62,12 @@
       </div>
     </transition-group>
 
-    <div class="console-history__cancel">
+    <button
+      class="console-history__cancel"
+      @click="items.length && $emit('openModal')"
+    >
       <CancelImg/>
-    </div>
+    </button>
   </div>
 </template>
 

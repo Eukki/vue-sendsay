@@ -1,4 +1,5 @@
 import Sendsay from './sendsay';
+import Utils from '@/scripts/Utils';
 
 export default class API {
   static async login(loginData) {
@@ -13,29 +14,29 @@ export default class API {
   // -------------- SYSTEM ------------- //
   // ----------------------------------- //
 
+  static setSession(session: string) {
+    Sendsay.setSession(session);
+    Utils.Document.setCookie('vue-sendsay-session', session);
+  }
+
   static request(data: any = {}): Promise<any> {
     return new Promise((resolve) => {
-      const method = data.action === 'login' ? 'login' : 'request';
-      const action = Object.assign({}, data).action;
-
-      if (action === 'login') delete data.action;
-
-      Sendsay[method]({ ...data })
+      Sendsay.request({ ...data })
         .then((res = {}) => {
           console.log(
             '[API] Request success \n',
-            '     Action:', action, '\n',
+            '     Action:', data.action, '\n',
             '     Response:', res
           );
-          resolve({ ...res, success: true });
+          resolve({ ...res, success: true, action: data.action });
         })
         .catch((error = {}) => {
           console.log(
             '[API] Request error \n',
-            '     Action:', action, '\n',
+            '     Action:', data.action, '\n',
             '     Error:', error
           );
-          resolve({ ...error, success: false });
+          resolve({ ...error, success: false, action: data.action });
         });
     });
   }

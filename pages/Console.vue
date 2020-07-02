@@ -18,6 +18,7 @@
           @copyOnBuffer="copyOnBuffer"
           @copyAndSend="copyAndSend"
           @remove="remove"
+          @openModal="modal.isOpen = true"
         />
 
         <div class="border"/>
@@ -59,6 +60,15 @@
           @send="send()"
           @format="format"
         />
+
+        <BaseModal
+          :is-open="modal.isOpen"
+          :title="modal.title"
+          :text="modal.text"
+          :buttons="modal.buttons"
+          @closeModal="closeModal"
+          @clearHistory="clear"
+        />
       </v-app>
     </fullscreen>
   </div>
@@ -69,15 +79,18 @@
 
   import { Multipane, MultipaneResizer } from 'vue-multipane';
 
+  import BaseModal from '@/components/base/BaseModal.vue';
   import ConsoleHeader from '@/components/pages/ConsoleHeader.vue';
   import ConsoleRequestHistory from '@/components/pages/ConsoleRequestHistory.vue';
   import ConsoleTextarea from '@/components/pages/ConsoleTextarea.vue';
   import ConsoleFooter from '@/components/pages/ConsoleFooter.vue';
 
   import DotsImg from '@/assets/images/icons/dots.svg';
+  import Utils from '@/scripts/Utils';
 
   @Component({
     components: {
+      BaseModal,
       ConsoleHeader,
       ConsoleRequestHistory,
       ConsoleTextarea,
@@ -91,6 +104,7 @@
     @State(state => (state as any).History.items) historyItems;
     @State(state => (state as any).Config.textareaWidth) textareaWidth;
     @Action('SEND_REQUEST') sendRequest;
+    @Action('CLEAR_HISTORY') clearHistory;
     @Action('DELETE_FROM_HISTORY') deleteFromHistory;
     @Action('UPDATE_TEXTAREA_WIDTH') updateTextareaWidth;
 
@@ -98,11 +112,23 @@
     isLoading = false;
     isError = false;
 
+    modal = {
+      isOpen: false,
+      title: 'Вы точно хотите удалить историю запросов?',
+      text: 'Это действие нельзя будет отменить',
+      buttons: [
+        { text: 'Отмена', emit: 'closeModal' },
+        { text: 'Удалить', emit: 'clearHistory' }
+      ]
+    };
+
     request = '';
     response = '';
 
     fetch({ store, redirect }) {
-      if (!store.state.User.isAuth) redirect('/auth');
+      if (!store.state.User.isAuth || !Utils.Document.getCookie('vue-sendsay-session')) {
+        redirect('/auth');
+      }
     }
 
     fullscreenChange(fullscreen) {
@@ -129,8 +155,8 @@
     async send() {
       if (!this.isError) {
         this.isLoading = true;
-        const response = await this.sendRequest(this.request);
-        if (!response.success) this.isError = true;
+        const { response, success } = await this.sendRequest(this.request);
+        if (!success) this.isError = true;
         this.response = JSON.stringify(response, null, 2);
         this.isLoading = false;
       }
@@ -144,6 +170,11 @@
 
     remove(id) {
       this.deleteFromHistory({ id });
+    }
+
+    clear() {
+      this.closeModal();
+      this.clearHistory();
     }
 
     onInputRequest(value) {
@@ -170,6 +201,10 @@
       if (!this.checkValid()) return;
       if (this.request) this.request = JSON.stringify(JSON.parse(this.request),null, 2);
       if (this.response) this.response = JSON.stringify(JSON.parse(this.response),null, 2);
+    }
+
+    closeModal() {
+      this.modal.isOpen = false;
     }
   }
 </script>

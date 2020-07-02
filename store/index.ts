@@ -29,8 +29,9 @@ export const state = () => {
 export const actions = {
   // USER
   async LOGIN({ dispatch }, { login, sublogin, password }) {
-    const response = await API.login({ login, sublogin, password });
+    const response = await API.login({ login, sublogin, passwd: password });
     if (response.success) {
+      API.setSession(response.session);
       dispatch('EDIT_USER', { login, sublogin, isAuth: true });
     }
 
@@ -59,10 +60,10 @@ export const actions = {
       request,
       success,
       response: JSON.stringify(response, null, 2),
-      action: response.action || response.request.action || 'undefined'
+      action: (response || {}).action || ((response || {}).request || {}).action || request.action || 'undefined'
     });
 
-    return response;
+    return { response, success };
   },
 
   UPDATE_HISTORY({ state, commit }, requestData) {
@@ -93,6 +94,10 @@ export const actions = {
     const index = Utils.Array.find(history, id);
     history.splice(index, 1);
     commit('SET', { root: 'History', key: 'items', value: history });
+  },
+
+  CLEAR_HISTORY({ dispatch }) {
+    dispatch('EDIT_HISTORY', { items: [] });
   },
 
   EDIT_HISTORY({ commit }, update: Object) {
