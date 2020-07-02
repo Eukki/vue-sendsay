@@ -59,7 +59,7 @@ export const actions = {
       request,
       success,
       response: JSON.stringify(response, null, 2),
-      action: response.action || response.request.action || 'no action'
+      action: response.action || response.request.action || 'undefined'
     });
 
     return response;

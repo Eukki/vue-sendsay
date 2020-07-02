@@ -29,7 +29,7 @@
           :class="`${item.success ? '_success' : '_error'}`"
         />
 
-        <span class="console-history__items-item-text">{{ item.action }}</span>
+        <span class="console-history__items-item-text">{{ item.action.split(' ').join('&nbsp;') }}</span>
 
         <v-menu
           offset-y
