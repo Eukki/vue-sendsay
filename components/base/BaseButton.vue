@@ -5,7 +5,7 @@
       '_disabled': isDisabled,
       '_loading': isLoading
     }"
-    @click="!isDisabled && !isLoading && $emit('onClick')"
+    @click="!isDisabled && !isLoading && $emit('click')"
   >
     <span v-if="!isLoading">{{ text }}</span>
 

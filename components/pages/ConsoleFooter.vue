@@ -4,7 +4,7 @@
       text="Отправить"
       :is-loading="isLoading"
       :is-disabled="isDisabled"
-      @onClick="$emit('send')"
+      @click="$emit('send')"
     />
 
     <a

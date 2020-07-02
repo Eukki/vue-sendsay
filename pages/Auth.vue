@@ -34,7 +34,7 @@
           text="Войти"
           :is-loading="loginStatus === LoginStatus.SENT"
           :is-disabled="!isValid"
-          @onClick="auth"
+          @click="auth"
         />
       </div>
     </v-form>
@@ -114,7 +114,9 @@
     }
 
     fetch({ store, redirect }) {
-      if (store.state.User.isAuth) redirect('/console');
+      if (store.state.User.isAuth && Utils.Document.getCookie('vue-sendsay-session')) {
+        redirect('/console');
+      }
     }
 
     async auth() {
